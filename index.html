@@ -1,0 +1,22 @@
+<DOCTYPE html>
+<html>
+	<script src="https://s3.amazonaws.com/stitch-sdks/js/library/stable/stitch.min.js"></script>
+
+	<script src="https://s3.amazonaws.com/stitch-sdks/js/library/stable/stitch.min.js"></script>
+	<script>
+		const client = new stitch.StitchClient('test-bdphx');
+		const db = client.service('mongodb', 'mongodb-atlas').db('trialDB');
+		
+		client.login().then(() =>
+			db.collection('trialCollection').updateOne({owner_id: client.authedId()}, {$set:{number:42}}, {upsert:true})
+			).then(()=>
+				db.collection('trialCollection').find({owner_id: client.authedId()})
+		      	).then(docs => {
+				console.log("Found docs", docs)
+				console.log("[MongoDB Stitch] Connected to Stitch")
+			}).catch(err => {
+			      console.error(err)
+		      	});
+	</script>
+</html>
+
